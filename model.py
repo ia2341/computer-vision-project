@@ -55,8 +55,8 @@ def content_loss(predicted, actual):
 def loss(model, output_image, actual_content_features, actual_gram_features, alpha=1000, beta=0.01):
 
     model_representation = model(output_image)
-    content_representation = model_representation[ : config.num_content_layers]
-    style_representation = model_representation[config.num_content_layers : ]
+    content_representation = model_representation[ : len(config.content_layers)]
+    style_representation = model_representation[len(config.content_layers) : ]
 
     total_content_loss, total_style_loss = 0, 0
 
@@ -70,8 +70,8 @@ def loss(model, output_image, actual_content_features, actual_gram_features, alp
         total_style_loss += gram_style_loss(predicted_gram, actual_gram, shape[0] * shape[1], shape[-1])
 
     # normalize loss per layer
-    total_content_loss /= config.num_content_layers
-    total_style_loss /= config.num_style_layers
+    total_content_loss /= len(config.content_layers)
+    total_style_loss /= len(config.style_layers)
 
     loss = (alpha * total_content_loss) + (beta * total_style_loss)
     return loss, total_content_loss, total_style_loss
@@ -83,7 +83,7 @@ def feature_representations(model, content_image, style_image):
     style = model(style_image)
 
     # return value of layer.output is list. Index by [0] to get the actual value
-    content_features = [layer for layer in content[ : config.num_content_layers]]
-    style_features = [layer for layer in style[config.num_content_layers : ]]
+    content_features = [layer for layer in content[ : len(config.content_layers)]]
+    style_features = [layer for layer in style[len(config.content_layers) : ]]
 
     return content_features, style_features
