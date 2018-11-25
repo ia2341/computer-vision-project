@@ -49,11 +49,11 @@ def deprocess_image(processed_image):
         image = np.squeeze(image, axis = 0)
 
     # This reverses the process of tf.keras.applications.vgg19.preprocess_input
-    norm_grads = config.NORM_GRADS
+    norm_grads = config.CHANNEL_MEANS
     image[:, :, 0] += norm_grads[0]
     image[:, :, 1] += norm_grads[1]
     image[:, :, 2] += norm_grads[2]
-    image = x[:, :, ::-1]
+    image = image[:, :, ::-1]
 
     image = np.clip(image, 0, 255).astype('uint8')
     return image
@@ -68,8 +68,3 @@ def imshow(image, caption=None):
     if caption is not None:
         plt.title(caption)
     plt.imshow(image.astype('uint8'))
-
-
-def main():
-
-    # set mpl parameters

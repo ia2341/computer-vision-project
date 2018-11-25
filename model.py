@@ -32,10 +32,10 @@ def gram_matrix(feature):
     https://www.cv-foundation.org/openaccess/content_cvpr_2016/papers/Gatys_Image_Style_Transfer_CVPR_2016_paper.pdf
     '''
     # flatten the features to one row per channel
-    num_channels = feature.shape()[-1]
+    num_channels = feature.shape[-1]
     feature = tf.reshape(feature, [-1, num_channels])
 
-    return np.matmul(feature.T, feature)
+    return tf.matmul(feature, feature, transpose_a = True)
 
 
 def gram_style_loss(predicted_gram, actual_gram, pixels, channels):
@@ -56,20 +56,23 @@ def content_loss(predicted, actual):
 def loss(model, output_image, actual_content_features, actual_gram_features, alpha=1000, beta=0.01):
 
     model_representation = model(output_image)
-    content_representation = model_representation[ : num_content_layers]
-    style_representation = model_representation[num_content_layers : ]
+    content_representation = model_representation[ : config.num_content_layers]
+    style_representation = model_representation[config.num_content_layers : ]
 
     total_content_loss, total_style_loss = 0, 0
 
     for actual_content, predicted_content in zip(actual_content_features, content_representation):
-        total_content_loss += content_loss(predicted_content, actual_content)
+        total_content_loss += content_loss(predicted_content[0], actual_content)
 
-    for actual_gram, predicted_gram in zip(actual_gram_features, style_representation):
-        total_style_loss += gram_style_loss(predicted_gram, actual_gram)
+    for actual_gram, predicted_style in zip(actual_gram_features, style_representation):
+        predicted_gram = gram_matrix(predicted_style[0]) 
+        shape = list(predicted_style[0].shape)
+        shape = predicted_style[0].get_shape().as_list()
+        total_style_loss += gram_style_loss(predicted_gram, actual_gram, shape[0] * shape[1], shape[-1])
 
     # normalize loss per layer
-    total_content_loss /= num_content_layers
-    total_style_loss /= num_style_layers
+    total_content_loss /= config.num_content_layers
+    total_style_loss /= config.num_style_layers
 
     loss = (alpha * total_content_loss) + (beta * total_style_loss)
     return loss, total_content_loss, total_style_loss
