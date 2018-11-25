@@ -23,8 +23,7 @@ def model():
     content_outputs = [original_vgg.get_layer(layer).output for layer in config.content_layers]
     style_outputs = [original_vgg.get_layer(layer).output for layer in config.style_layers]
 
-    outputs = content_outputs + style_outputs
-    return models.Model(original_vgg.input, outputs)
+    return models.Model(original_vgg.input, content_outputs + style_outputs)
 
 
 def gram_matrix(feature):
@@ -62,12 +61,12 @@ def loss(model, output_image, actual_content_features, actual_gram_features, alp
     total_content_loss, total_style_loss = 0, 0
 
     for actual_content, predicted_content in zip(actual_content_features, content_representation):
-        total_content_loss += content_loss(predicted_content[0], actual_content)
+        total_content_loss += content_loss(predicted_content, actual_content)
 
     for actual_gram, predicted_style in zip(actual_gram_features, style_representation):
-        predicted_gram = gram_matrix(predicted_style[0]) 
-        shape = list(predicted_style[0].shape)
-        shape = predicted_style[0].get_shape().as_list()
+        predicted_gram = gram_matrix(predicted_style) 
+        shape = list(predicted_style.shape)
+        shape = predicted_style.get_shape().as_list()
         total_style_loss += gram_style_loss(predicted_gram, actual_gram, shape[0] * shape[1], shape[-1])
 
     # normalize loss per layer
@@ -84,7 +83,7 @@ def feature_representations(model, content_image, style_image):
     style = model(style_image)
 
     # return value of layer.output is list. Index by [0] to get the actual value
-    content_features = [layer[0] for layer in content[ : config.num_content_layers]]
-    style_features = [layer[0] for layer in style[config.num_content_layers : ]]
+    content_features = [layer for layer in content[ : config.num_content_layers]]
+    style_features = [layer for layer in style[config.num_content_layers : ]]
 
     return content_features, style_features
