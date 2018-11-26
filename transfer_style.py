@@ -11,7 +11,7 @@ import model
 
 def gradients(my_model, output_image, content_features, gram_style_features, alpha = 10000, beta = 1):
     with tf.GradientTape() as g:
-        loss_ = loss(my_model, output_image, content_features, gram_style_features, alpha, beta)
+        loss_ = model.loss(my_model, output_image, content_features, gram_style_features, alpha, beta)
     return g.gradient(loss_, output_image)
 
 def transfer_style(content_image, style_image, epochs = 10000, alpha = 10000, beta = 1):
@@ -61,8 +61,8 @@ def transfer_style(content_image, style_image, epochs = 10000, alpha = 10000, be
 
 def main():
 
-    content_path = 'pictures/turtle.jpg'
-    style_path = 'artwork/wave.jpg'
+    content_path = config.CONTENT_FOLDER + '/' + config.CONTENT_FILE
+    style_path = config.STYLE_FOLDER + '/' + config.STYLE_FOLDER
 
     print('Loading the input image...')
     content_image = load_image(content_path)

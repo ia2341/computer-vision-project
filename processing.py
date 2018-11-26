@@ -24,15 +24,15 @@ def load_image(image_file):
 
 def deprocess_image(processed_image):
 
+    # remove the "batch" dimension from the image
     image = processed_image.copy()
     if len(image.shape) == 4:
         image = np.squeeze(image, axis = 0)
 
     # This reverses the process of tf.keras.applications.vgg19.preprocess_input
-    norm_grads = config.CHANNEL_MEANS
-    image[:, :, 0] += norm_grads[0]
-    image[:, :, 1] += norm_grads[1]
-    image[:, :, 2] += norm_grads[2]
+    image[:, :, 0] += config.CHANNEL_MEANS[0]
+    image[:, :, 1] += config.CHANNEL_MEANS[1]
+    image[:, :, 2] += config.CHANNEL_MEANS[2]
     image = image[:, :, ::-1]
 
     image = np.clip(image, 0, 255).astype('uint8')

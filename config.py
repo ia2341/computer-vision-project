@@ -1,8 +1,11 @@
 import numpy as np
 
-ARTWORK_FOLDER = "artwork"
-PICTURE_FOLDER = "pictures"
+STYLE_FOLDER = "artwork"
+CONTENT_FOLDER = "pictures"
 OUTPUT_FOLDER = "output"
+
+CONTENT_FILE = 'turtle.jpg'
+STYLE_FILE = 'wave.jpg'
 
 MAX_DIM = 512
 
