@@ -1,7 +1,7 @@
 import numpy as np
 
-STYLE_FOLDER = "artwork"
-CONTENT_FOLDER = "pictures"
+STYLE_FOLDER = "style"
+CONTENT_FOLDER = "content"
 OUTPUT_FOLDER = "output"
 
 CONTENT_FILE = 'turtle.jpg'
