@@ -1,17 +1,7 @@
 import numpy as np
-import tensorflow as tf
 import matplotlib.pyplot as plt
-import matplotlib as mpl
 from PIL import Image
-import time
-import functools
-import tensorflow as tf
-import tensorflow.contrib.eager as tfe
 from tensorflow.python.keras.preprocessing import image as kp_image
-from tensorflow.python.keras import models
-from tensorflow.python.keras import losses
-from tensorflow.python.keras import layers
-from tensorflow.python.keras import backend as K
 
 import config
 
@@ -29,17 +19,7 @@ def load_image(image_file):
     # Add a dimension in the 0th axis to account for the batch size
     image = np.expand_dims(image, axis = 0)
     
-    return image.astype('uint8')
-
-
-def process_image(image):
-    image = tf.keras.applications.vgg19.preprocess_input(image)
     return image
-
-
-def load_and_process_image(image_file):
-    image = load_image(image_file).astype('float32')
-    return process_image(image)
 
 
 def deprocess_image(processed_image):
@@ -59,12 +39,8 @@ def deprocess_image(processed_image):
     return image
 
 
-def imshow(image, caption=None):
+def imshow(image):
 
     # Remove the batch dimension
     image = np.squeeze(image, axis = 0)
-
-    # Show the image
-    if caption is not None:
-        plt.title(caption)
     plt.imshow(image.astype('uint8'))
