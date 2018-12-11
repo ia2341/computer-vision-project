@@ -2,6 +2,9 @@ import cv2
 import numpy as np
 from PIL import Image
 
+import config
+
+
 def color_transfer(source, target):
     # convert color space from BGR to L*a*b color space
     # note - OpenCV expects a 32bit float rather than 64bit
@@ -55,8 +58,8 @@ def image_stats(image):
 
 
 def main():
-    target = cv2.imread(style_path)
-    source = cv2.imread(content_path)
+    target = cv2.imread(config.style_path)
+    source = cv2.imread(config.content_path)
 
     # transfer of color
     transfer = color_transfer(source, target)

@@ -2,6 +2,8 @@ import cv2
 import numpy as np
 from PIL import Image
 
+import config
+
 
 def color_transfer(source, target):
     # convert color space from BGR to L*a*b color space
