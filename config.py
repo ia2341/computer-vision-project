@@ -1,11 +1,11 @@
 import numpy as np
 
-STYLE_FOLDER = "style"
-CONTENT_FOLDER = "content"
-OUTPUT_FOLDER = "output"
+content_path = 'content/turtle.jpg'
+style_path = 'style/picasso.jpg'
 
-CONTENT_FILE = 'turtle.jpg'
-STYLE_FILE = 'wave.jpg'
+ARTWORK_FOLDER = "style"
+PICTURE_FOLDER = "content"
+OUTPUT_FOLDER = "output"
 
 MAX_DIM = 512
 
@@ -15,4 +15,4 @@ CHANNEL_MEANS = np.array([103.939, 116.779, 123.68])
 content_layers = ['block5_conv2']
 style_layers = ['block1_conv1', 'block2_conv1', 'block3_conv1', 'block4_conv1', 'block5_conv1']
 
-UPDATE_EPOCH = 1
+UPDATE_EPOCH = 200

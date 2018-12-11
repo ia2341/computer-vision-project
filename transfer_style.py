@@ -82,8 +82,8 @@ def main():
     ''' Main method that performs the style transfer algorithm '''
 
     # get the file paths for the content and style images
-    content_path = config.CONTENT_FOLDER + '/' + config.CONTENT_FILE
-    style_path = config.STYLE_FOLDER + '/' + config.STYLE_FILE
+    content_path = config.content_path
+    style_path = config.style_path
 
     # load the desired images
     print('Loading the input image...')

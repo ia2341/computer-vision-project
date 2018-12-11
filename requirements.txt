@@ -3,3 +3,5 @@ matplotlib
 tensorflow
 Pillow
 tensorflow-gpu
+IPython
+opencv-python
